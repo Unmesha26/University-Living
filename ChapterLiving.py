@@ -1,8 +1,10 @@
 import time
 
 from lxml import html
-from pymongo import MongoClient
 from selenium.webdriver.common.by import By
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+from urllib.parse import quote_plus
 
 from SeleniumHelper import SeleniumHelper
 
@@ -25,8 +27,8 @@ class RoomSearch:
     def __init__(self, helper):
         self.helper = helper
         self.room_details = []
-        self.username = ''
-        self.password = ''
+        self.username = 'unmeshabhowmik@gmail.com'
+        self.password = 'unmesha@26'
         self.quick_view_details = {}
         self.final_details = {}
         self.all_rooms = []
@@ -75,6 +77,7 @@ class RoomSearch:
         self.helper.scroll_to_element(By.XPATH, self.ROOM_TYPE_FILTER_XPATH)
         self.helper.wait_until_clickable_and_click(By.XPATH, self.ROOM_TYPE_FILTER_XPATH)
         print('Clicked on ensuite')
+        self.helper.scroll_to_element(By.XPATH, self.ROOM_TIER_COLLAPSE_BTN_XPATH)
         self.helper.wait_until_clickable_and_click(By.XPATH, self.ROOM_TIER_COLLAPSE_BTN_XPATH)
         print('Clicked on arrow')
         self.helper.wait_for_page_load(self.ROOM_TIER_XPATH)
@@ -162,9 +165,15 @@ class RoomSearch:
         print(self.all_rooms)
 
     def push_to_mongo(self):
-        client = MongoClient('mongodb://localhost:27017/')
-        db = client['your_database']
-        collection = db['your_collection']
+        escaped_username = quote_plus("Chapterliving")
+        escaped_password = quote_plus("Unmesha@26")
+
+        uri = f"mongodb+srv://{escaped_username}:{escaped_password}@cluster0.w8bb2ld.mongodb.net/?retryWrites=true&w=majority"
+
+        client = MongoClient(uri, server_api=ServerApi('1'))
+
+        db = client['Chapterliving']
+        collection = db['room_details']
         result = collection.insert_many(self.all_rooms)
 
         # Print the inserted document IDs
