@@ -77,7 +77,7 @@ class RoomSearch:
         self.helper.scroll_to_element(By.XPATH, self.ROOM_TYPE_FILTER_XPATH)
         self.helper.wait_until_clickable_and_click(By.XPATH, self.ROOM_TYPE_FILTER_XPATH)
         print('Clicked on ensuite')
-        self.helper.scroll_to_element(By.XPATH, self.ROOM_TIER_COLLAPSE_BTN_XPATH)
+        # self.helper.scroll_to_element(By.XPATH, self.ROOM_TIER_COLLAPSE_BTN_XPATH)
         self.helper.wait_until_clickable_and_click(By.XPATH, self.ROOM_TIER_COLLAPSE_BTN_XPATH)
         print('Clicked on arrow')
         self.helper.wait_for_page_load(self.ROOM_TIER_XPATH)
